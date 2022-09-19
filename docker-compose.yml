@@ -1,0 +1,14 @@
+version: "3.9"  # d-c syntax version
+
+services:
+  app:  # service name
+    build:  # where to build the container
+      context: .
+      args:
+        - DEV=true
+    ports:  # match ports mach / container
+      - "8000:8000"
+    volumes:  # maps directories from local to container
+      - ./app:/app
+    command: >  # default command when using RUN
+      sh -c "python manage.py runserver 0.0.0.0:8000" 

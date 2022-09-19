@@ -1,0 +1,24 @@
+--- # this means its a yml file
+# github action: docker container + config to run specific task
+name: Checks
+
+on: [push] # trigger
+
+jobs:
+  test-lint:  # job id
+    name: Test and Lint
+    runs-on: ubuntu-20.04
+    steps: # steps are executed in order
+      - name: Login to Docker hub #human readable name
+        uses: docker/login-action@v1  # allows using pre-made actions.
+                                      # @v1 is the action version to use
+        with:
+          username: ${{ secrets.DOCKERHUB_USER }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Checkout 
+        uses: actions/checkout@v2 # checkouts the code
+      - name: Test
+        run: docker-compose run --rm app sh -c "python manage.py test"
+      - name: Lint
+        run: docker-compose run --rm app sh -c "flake8"
+
