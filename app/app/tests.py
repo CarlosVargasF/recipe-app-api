@@ -1,7 +1,7 @@
 """
 Sample tests
 """
-from django.test import SimpleTestCase  # SimpleTestCase: no database integration
+from django.test import SimpleTestCase  # SimpleTestCase: no db integration
 
 from app import calc
 
