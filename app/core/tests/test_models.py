@@ -1,6 +1,7 @@
 """
 Test for models
 """
+from unittest.mock import patch
 from decimal import Decimal
 
 from django.test import TestCase
@@ -20,7 +21,7 @@ class ModelTest(TestCase):
 
     def test_create_user_with_email_successful(self):
         """test creating a user with an email is successful"""
-        
+
         email = 'test@example.com'   # Aways use @example for test  
         password = 'testpass123'
 
@@ -31,7 +32,7 @@ class ModelTest(TestCase):
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
-                
+
 
     def test_new_user_email_normalized(self):
         """test email is normalized for new users"""
@@ -89,3 +90,24 @@ class ModelTest(TestCase):
         tag = models.Tag.objects.create(user=user, name='Tag1')
 
         self.assertEqual(str(tag), tag.name)
+
+    def test_create_ingredient(self):
+        """Test creating an ingredient is successful"""
+        user = create_user()
+        ingredient = models.Ingredient.objects.create(
+            user=user,
+            name='ingredient1'
+        )
+
+        self.assertEqual(str(ingredient), ingredient.name)
+
+    # we mock uuid fn to easlily check its value during testing
+    @patch('core.models.uuid.uuid4')
+    def test_recipe_file_name_uuid(self, mock_uuid):
+        """Test generating image path"""
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.recipe_image_file_path(None, 'example.jpg')
+
+        self.assertEqual(file_path, f'uploads/recipe/{uuid}.jpg')
+
