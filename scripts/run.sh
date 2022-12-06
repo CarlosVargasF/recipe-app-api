@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e  # crash the exec immediately if error encountered
 
@@ -9,4 +9,3 @@ python manage.py migrate
 
 # run uwsgi service
 uwsgi --socket :9000 --workers 4 --master --enable-threads --module app.wsgi
-

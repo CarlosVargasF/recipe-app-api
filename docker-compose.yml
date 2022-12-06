@@ -20,6 +20,7 @@ services:
       - DB_NAME=devdb
       - DB_USER=devuser
       - DB_PASS=changeme
+      - DB_DEBUG=1
     depends_on:
       - db    # db should always start before app
 
